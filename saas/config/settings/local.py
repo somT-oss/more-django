@@ -2,7 +2,7 @@ from .base import *
 
 ALLOWED_HOST = []
 
-INSTALLED_APPS += ["users"]
+INSTALLED_APPS += ["users", "products"]
 
 DEBUG = True
 

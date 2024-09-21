@@ -77,6 +77,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                                  blank=False,
                                  null=False,
                                  help_text="User's room name")
+    is_staff = models.BooleanField(default=False,
+                                   help_text='Staff user')
     is_seller = models.BooleanField(default=False,
                                     null=False,
                                     blank=False,
@@ -84,6 +86,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
     objects = UserManager()
+
+    class Meta:
+        """
+        Meta class for handling model functionality
+        """
+        verbose_name = "USER"
+        verbose_name_plural = "USERS"
 
     def __str__(self) -> str:
         return f"{(self.first_name + self.last_name).upper()}"
