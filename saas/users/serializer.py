@@ -56,8 +56,21 @@ class CreateCustomUserserializers(serializers.Modelserializers):
         ]
 
     def validate(self, attrs: dict) -> dict:
+        """
+        Validate request JSON
+        """
         all_hostels = ['jaja', 'biobaku', 'eni_njoku', 'mariere']
         if attrs.get('hostel') not in all_hostels:
             raise ValidationError("Invalid hostel")
 
         return attrs
+
+    def create(self, validated_data) -> CustomUser:
+        """
+        Create user from validated JSON
+        """
+        user = CustomUser.objects.create_user(
+            **validated_data
+        )
+        user.save()
+        return user
