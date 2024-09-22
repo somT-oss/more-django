@@ -53,10 +53,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         """
         Choices for available hostels
         """
-        BIOBAKU = "1", "Prof. Saburi Biobaku Hall"
-        ENI_NJOKU = "2", "Prof. Eni Njoku Hall"
-        MARIERE = "3", "Baluba Kingdom"
-        JAJA = "4", "King Jaja Hall"
+        BIOBAKU = "biobaku", "Prof. Saburi Biobaku Hall"
+        ENI_NJOKU = "eni_njoku", "Prof. Eni Njoku Hall"
+        MARIERE = "mariere", "Baluba Kingdom"
+        JAJA = "jaja", "King Jaja Hall"
     id = models.CharField(default=uuid.uuid4, primary_key=True)
     first_name = models.CharField(max_length=50,
                                   blank=False,
@@ -102,9 +102,10 @@ class Community(models.Model):
     """
     Model that represents a community
     """
+    id = models.CharField(default=uuid.uuid4, primary_key=True)
     community_owner = models.ForeignKey(CustomUser,
                                         on_delete=models.CASCADE,
-                                        help_text="Owner of the community") 
+                                        help_text="Owner of the community")
     name = models.CharField(max_length=50,
                             null=False,
                             blank=False,

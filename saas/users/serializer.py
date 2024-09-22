@@ -1,0 +1,63 @@
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+from .models import CustomUser
+
+
+class CreateCustomUserserializers(serializers.Modelserializers):
+    first_name = serializers.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+        help_text="User's first name"
+    )
+    last_name = serializers.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+        help_text="User's last name"
+    )
+    email = serializers.EmailField(
+        help_text="User's email"
+    )
+    password = serializers.CharField(
+        max_length=16,
+        null=False,
+        blank=False,
+        help_text="User's password"
+    )
+    hostel = serializers.CharField(
+        max_length=30,
+        null=False,
+        blank=False,
+        help_text="User's hostel"
+    )
+    room_name = serializers.CharField(
+        max_length=10,
+        null=False,
+        blank=False,
+        help_text="User's room name"
+    )
+    is_seller = serializers.BooleanField(
+        default=False,
+        help_text="True; if user is seller, else; False"
+    )
+
+
+    class Meta:
+        model = CustomUser
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+            "password",
+            "hostel",
+            "room_name",
+            "is_seller"
+        ]
+
+    def validate(self, attrs: dict) -> dict:
+        all_hostels = ['jaja', 'biobaku', 'eni_njoku', 'mariere']
+        if attrs.get('hostel') not in all_hostels:
+            raise ValidationError("Invalid hostel")
+
+        return attrs
