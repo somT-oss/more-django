@@ -22,6 +22,11 @@ class Products(models.Model):
                                    blank=False,
                                    default=1,
                                    help_text="Quantity of products available")
+    price = models.CharField(
+        null=False,
+        blank=False,
+        help_text="Price of product"
+    )
     # TODO: Add product image field after handling static & media files
     # image = models.ResizedImageField(size=[400, 400])
 
