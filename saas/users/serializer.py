@@ -3,17 +3,17 @@ from rest_framework.exceptions import ValidationError
 from .models import CustomUser
 
 
-class CreateCustomUserserializers(serializers.Modelserializers):
+class CreateCustomUserserializers(serializers.ModelSerializer):
     first_name = serializers.CharField(
         max_length=50,
-        null=False,
-        blank=False,
+        allow_null=False,
+        allow_blank=False,
         help_text="User's first name"
     )
     last_name = serializers.CharField(
         max_length=50,
-        null=False,
-        blank=False,
+        allow_null=False,
+        allow_blank=False,
         help_text="User's last name"
     )
     email = serializers.EmailField(
@@ -21,27 +21,26 @@ class CreateCustomUserserializers(serializers.Modelserializers):
     )
     password = serializers.CharField(
         max_length=16,
-        null=False,
-        blank=False,
+        allow_null=False,
+        allow_blank=False,
         help_text="User's password"
     )
     hostel = serializers.CharField(
         max_length=30,
-        null=False,
-        blank=False,
+        allow_null=False,
+        allow_blank=False,
         help_text="User's hostel"
     )
     room_name = serializers.CharField(
         max_length=10,
-        null=False,
-        blank=False,
+        allow_null=False,
+        allow_blank=False,
         help_text="User's room name"
     )
     is_seller = serializers.BooleanField(
         default=False,
         help_text="True; if user is seller, else; False"
     )
-
 
     class Meta:
         model = CustomUser
