@@ -4,5 +4,5 @@ from .views import (
 )
 
 urlpatterns = [
-    path("home", UserAPIView.as_view(), name="users:view-home-url")
+    path("handler/", UserAPIView.as_view(), name="view-home-url")
 ]
