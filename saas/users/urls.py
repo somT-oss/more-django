@@ -1,8 +1,10 @@
 from django.urls import path
 from .views import (
-    create_buyers
+    create_user,
+    user_login
 )
 
 urlpatterns = [
-    path("create-buyers/", create_buyers, name="create-buyers-path")
+    path("create-users/", create_user, name="create-users-path"),
+    path("login-users/", user_login)
 ]

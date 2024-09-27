@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv, find_dotenv
 from faker import Faker
 from typing import Callable
-import sys 
+import sys
 
 load_dotenv(find_dotenv())
 
@@ -24,8 +24,7 @@ logging.basicConfig(
 class UserFunctionalityHandler:
     """
     Handles functionality for users such as:
-    - create buyers
-    - create sellers
+    - create users
     """
     def __init__(self) -> None:
         self.url = os.getenv("DEV_URL")
@@ -37,12 +36,12 @@ class UserFunctionalityHandler:
         self.fake = Faker()
         return None
 
-    def create_buyers(self, count: int) -> int:
+    def create_users(self, count: int) -> int:
         """
-        Create <count> number of buyers
-        @param count: number of sellers to create
+        Create <count> number of users
+        @param count: number of users to create
         """
-        endpoint = "users/create-buyers/"
+        endpoint = "users/create-users/"
         users_handler_url = self.base_url + endpoint
         logging.info(f"Base URL: {self.base_url}")
         logging.info(f"Endpoint called {endpoint}")
@@ -50,8 +49,9 @@ class UserFunctionalityHandler:
         print("")
         logging.info(f"Request to create {count} number of buyers initiated")
         try:
-
+            is_seller_counter, is_buyer_counter = 0, 0  
             for _ in range(count):
+                is_seller = random.choice([True, False])
                 payload = {
                     "first_name": self.fake.unique.first_name(),
                     "last_name": self.fake.unique.last_name(),
@@ -59,25 +59,23 @@ class UserFunctionalityHandler:
                     "password": self.password,
                     "hostel": random.choice(self.hostels),
                     "room_name": random.choice(self.room_names),
-                    "is_seller": random.choice([True, False])
+                    "is_seller": is_seller
                 }
+                if is_seller is True:
+                     is_seller_counter += 1
+                else:
+                    is_buyer_counter += 1
                 response = r.post(
                     url=users_handler_url,
                     data=payload
                 )
                 logging.info(f"statusCode: {response.status_code}")
-            logging.info(f"Done creating {count} number of buyers")
+            logging.info(f"Done creating {count} number of users")
+            logging.info(f"Created {is_seller_counter} number of seller(s)")
+            logging.info(f"Created {is_buyer_counter} number of buyer(s)")
             return 0
         except Exception as e:
             logging.warning(f"{e}")
-
-    @staticmethod
-    def create_sellers(count: int) -> int:
-        """
-        Create <count> number of sellers
-        @param count: number of sellers to create
-        """
-        return 0
 
 
 def main():
@@ -87,13 +85,15 @@ def main():
 
     if not sys_args:
         logging.info("Enter commands for loader...")
-    
+        print("")
+
     function_call_dict: dict = {}
 
     for command in sys_args:
         if ":" not in command:
             logging.warning(f"{command} is an invalid command")
             logging.info(f"Existing loader...")
+            print("")
             return -1
         args = command.split(":")
         function_call = args[0]
@@ -103,21 +103,17 @@ def main():
     for key, value in function_call_dict.items():
         if not value.isdigit():
             logging.warning(f"Invalid value: {value} for {key}")
-            return -1 
+            return -1
 
         if value == "0":
             logging.warning(f"Cannot create 0 users")
-            return -1 
+            return -1
 
     for key, value in function_call_dict.items():
-        if key == 'create-buyer':
-            user_utils.create_buyers(int(value))
-        elif key == 'create-seller':
-            user_utils.create_sellers(int(value))
+        if key == 'create-user':
+            user_utils.create_users(int(value))
 
-        
 if __name__ == "__main__":
-    print("")
     print("")
     logging.info("Script is up and grateful.. 🙏")
     main()

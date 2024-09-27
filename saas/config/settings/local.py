@@ -6,7 +6,12 @@ load_dotenv(find_dotenv())
 
 ALLOWED_HOST = []
 
-INSTALLED_APPS += ["users", "products", "orders"]
+INSTALLED_APPS += [
+                    "users",
+                    "products",
+                    "orders",
+                    "rest_framework_simplejwt"
+                ]
 
 DEBUG = True
 
