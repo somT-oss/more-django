@@ -4,7 +4,6 @@ import requests as r
 import os
 from dotenv import load_dotenv, find_dotenv
 from faker import Faker
-from typing import Callable
 import sys
 
 load_dotenv(find_dotenv())
@@ -77,6 +76,40 @@ class UserFunctionalityHandler:
         except Exception as e:
             logging.warning(f"{e}")
 
+    def login_as_a_random_buyer(self, email, password) -> str:
+        """
+        Returns params {
+            id: user_id,
+            first_name: user first_name,
+            last_name: user last_name,
+            email: user email,
+            tokens: {
+                access: user access_token,
+                refresh: user refresh_token
+            }
+        }
+        """
+        endpoint = "login-users/"
+        login_url = self.base_url + endpoint
+        payload = {
+            "email": email,
+            "password": password
+        }
+        try:
+            response = r.post(
+                url=login_url,
+                data=payload
+            )
+            if response.status_code != 200:
+                logging.warning("Unsuccessful login")
+                return {
+                    "error": "Unsuccessful login",
+                    "statusCode": "response.status_code",
+                    "response_json": f"{response.json()}"
+                }
+            return response.json()
+        except Exception as e:
+            logging.warning(f"{e} occurred")
 
 def main():
     user_utils = UserFunctionalityHandler()
@@ -92,7 +125,7 @@ def main():
     for command in sys_args:
         if ":" not in command:
             logging.warning(f"{command} is an invalid command")
-            logging.info(f"Existing loader...")
+            logging.info("Existing loader...")
             print("")
             return -1
         args = command.split(":")
@@ -106,7 +139,7 @@ def main():
             return -1
 
         if value == "0":
-            logging.warning(f"Cannot create 0 users")
+            logging.warning("Cannot create 0 users")
             return -1
 
     for key, value in function_call_dict.items():

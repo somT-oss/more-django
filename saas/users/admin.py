@@ -7,7 +7,7 @@ class CustomUserAdmin(admin.ModelAdmin):
     """
     Custom custom user admin handler
     """
-    list_display = ("first_name", "last_name", "is_seller")
+    list_display = ("first_name", "last_name", "email", "is_seller")
 
 
 @admin.register(Community)

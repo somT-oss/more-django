@@ -6,6 +6,10 @@ load_dotenv(find_dotenv())
 
 ALLOWED_HOST = []
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend'
+]
+
 INSTALLED_APPS += [
                     "users",
                     "products",

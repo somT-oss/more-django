@@ -27,6 +27,17 @@ class Products(models.Model):
         blank=False,
         help_text="Price of product"
     )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        editable=False,
+        help_text="date product was created"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        null=False,
+        blank=False,
+        help_text="date product was updated"
+    )
     # TODO: Add product image field after handling static & media files
     # image = models.ResizedImageField(size=[400, 400])
 
