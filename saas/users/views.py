@@ -16,6 +16,7 @@ def create_user(request: Request) -> Response:
     """
     Post Endpoint for creating users'
     """
+
     serializer_class = CreateCustomUserserializers(data=request.data)
     if not serializer_class.is_valid():
         return Response(serializer_class.errorss, status.HTTP_400_BAD_REQUEST)
@@ -61,32 +62,3 @@ def user_login(request: Request) -> Response:
             "errors": f"{e}"
         }, status.HTTP_400_BAD_REQUEST)
 
-
-@api_view(['POST'])
-@permission_classes(IsAuthenticated)
-def create_product(request: Request) -> Response:
-    """
-    Method that handles creating a product for a seller
-    """
-    if not request.user.is_seller:
-        return Response({
-            "errors": "You are not a seller"
-        }, status.HTTP_400_BAD_REQUEST)
-
-    serializer_class = CreateProductSeriallizers(data=request.data)
-
-    if not serializer_class.is_valid():
-        return Response(serializer_class.errorss, status.HTTP_400_BAD_REQUEST)
-
-    try:
-        # product_name = serializer_class.validated_data.get("name")
-        # product_quantity = serializer_class.validated_data.get("quantity")
-        product = Products.objects.create(**serializer_class.validated_data, owner=request.user)
-        product.save()
-
-        return Response(serializer_class.product_data, status.HTTP_200_OK)
-
-    except Exception as e:
-        return Response({
-            "errors": str(e)
-        }, status.HTTP_400_BAD_REQUEST)

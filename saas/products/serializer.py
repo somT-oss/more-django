@@ -30,6 +30,3 @@ class CreateProductSeriallizers(serializers.ModelSerializer):
             "quantity",
             "price"
         ]
-
-    def product_data(self, validated_data):
-        return validated_data

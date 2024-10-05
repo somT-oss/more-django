@@ -111,6 +111,7 @@ class UserFunctionalityHandler:
         except Exception as e:
             logging.warning(f"{e} occurred")
 
+
 def main():
     user_utils = UserFunctionalityHandler()
 

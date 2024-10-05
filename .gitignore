@@ -2,3 +2,4 @@
 saas/__pycache__/*
 saas/*/__pycache__/*
 saas/*/*/__pycache__/*
+.idea/
