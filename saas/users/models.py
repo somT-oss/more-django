@@ -4,7 +4,7 @@ Imports uuid4 for updating default primary_key value for models
 import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-
+from django.conf import settings
 
 class UserManager(BaseUserManager):
     """
@@ -97,6 +97,80 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self) -> str:
         return f"{(self.first_name + self.last_name).upper()}"
 
+
+class BusinessOwnerProfile(models.Model):
+    """
+    Model that represents a sellers Profile
+    """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    business_name = models.CharField(
+        max_length=100,
+        null=False,
+        blank=False,
+        help_text="User business name"
+    )
+    business_description = models.CharField(
+        max_length=100,
+        null=False,
+        blank=False,
+        help_text="User business description"
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        editable=False,
+        null=False,
+        blank=False,
+        help_text="Date business profile was created"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        help_text="Date business profile was edited"
+    )
+
+    class Meta:
+        """
+        Meta class for overriding default model functionality
+        """
+        ordering = '-created_at',
+        verbose_name = 'BUSINESS_PROFILE'
+        verbose_name_plural = 'BUSINESS_PROFILES'
+
+    def __str__(self):
+        return self.business_name
+
+
+
+class BuyerProfile(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        help_text="Profile for buyers"
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        editable=False,
+        null=False,
+        blank=False,
+        help_text="Date buyer profile was created"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        help_text="Date buyer profile was edited"
+    )
+
+    class Meta:
+        """
+        Meta class for overriding default model functionality
+        """
+        ordering = '-created_at',
+        verbose_name = 'BUYER_PROFILE'
+        verbose_name_plural = 'BUYER_PROFILE'
+
+    def __str__(self):
+        return self.user.name
 
 class Community(models.Model):
     """
