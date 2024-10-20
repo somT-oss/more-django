@@ -36,7 +36,6 @@ def user_login(request: Request) -> Response:
     """
     Post Endpoint for users' login
     """
-    pass
     serializer_class = CustomUsersLoginSerializer(data=request.data)
     if not serializer_class.is_valid():
         return Response(serializer_class.errors, status.HTTP_400_BAD_REQUEST)

@@ -5,6 +5,8 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.conf import settings
+from django_resized import ResizedImageField
+
 
 class UserManager(BaseUserManager):
     """
@@ -106,6 +108,7 @@ class BusinessOwnerProfile(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
+    profile_picture = ResizedImageField(size=[400, 400], upload_to='profile_picture', default='profile_pic/default.png')
     business_name = models.CharField(
         max_length=100,
         null=False,
@@ -142,13 +145,13 @@ class BusinessOwnerProfile(models.Model):
         return self.business_name
 
 
-
 class BuyerProfile(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         help_text="Profile for buyers"
     )
+    profile_picture = ResizedImageField(size=[400, 400], upload_to='profile_picture', default='profile_pic/default.png')
     created_at = models.DateTimeField(
         auto_now_add=True,
         editable=False,
