@@ -11,4 +11,5 @@ saas/terraform/tf_env.sh
 saas/terraform/terraform.tfstate
 saas/terraform/.terraform/
 saas/terraform/.terraform*
+saas/terraform/modules/terraform*
 saas/terraform/modules/.terraform*

@@ -11,5 +11,12 @@ resource "google_storage_bucket" "communely_media_bucket" {
 resource "google_storage_bucket_iam_member" "object_viewer_creator" {
   bucket = google_storage_bucket.communely_media_bucket.name
   role = "roles/storage.objectCreator"
-  member = var.service_account
+  member = "serviceAccount:${var.service_account}"
 }
+
+resource "google_storage_bucket_iam_member" "object_viewer_viewer" {
+  bucket = google_storage_bucket.communely_media_bucket.name
+  role = "roles/storage.objectViewer"
+  member = "serviceAccount:${var.service_account}"
+}
+

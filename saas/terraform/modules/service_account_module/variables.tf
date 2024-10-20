@@ -12,3 +12,7 @@ variable "project_id" {
   type = string
   description = "Project id"
 }
+
+output "email" {
+  value = google_service_account.communely_service_account.email
+}

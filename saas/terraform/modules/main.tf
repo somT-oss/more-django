@@ -2,7 +2,7 @@ module "bucket_module" {
     source = "./bucket_module"
     project_id = var.project_id
     bucket_name = var.bucket_name
-    service_account = module.service_account.service_account_name
+    service_account = module.service_account.email
 }
 
 module "service_account" {
