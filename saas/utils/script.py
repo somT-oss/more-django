@@ -40,7 +40,7 @@ class UserFunctionalityHandler:
         Create <count> number of users
         @param count: number of users to create
         """
-        endpoint = "users/create-users/"
+        endpoint = "api/users/create-users"
         users_handler_url = self.base_url + endpoint
         logging.info(f"Base URL: {self.base_url}")
         logging.info(f"Endpoint called {endpoint}")
@@ -51,6 +51,12 @@ class UserFunctionalityHandler:
             is_seller_counter, is_buyer_counter = 0, 0  
             for _ in range(count):
                 is_seller = random.choice([True, False])
+                is_buyer = random.choice([True, False])
+
+                print(is_seller, is_buyer)
+                if is_buyer and is_seller:
+                    is_seller = False
+                
                 payload = {
                     "first_name": self.fake.unique.first_name(),
                     "last_name": self.fake.unique.last_name(),
@@ -58,7 +64,8 @@ class UserFunctionalityHandler:
                     "password": self.password,
                     "hostel": random.choice(self.hostels),
                     "room_name": random.choice(self.room_names),
-                    "is_seller": is_seller
+                    "is_seller": is_seller,
+                    "is_buyer": is_buyer,
                 }
                 if is_seller is True:
                      is_seller_counter += 1
@@ -68,6 +75,7 @@ class UserFunctionalityHandler:
                     url=users_handler_url,
                     data=payload
                 )
+                logging.info(f"JSON response: {response.json()}")
                 logging.info(f"statusCode: {response.status_code}")
             logging.info(f"Done creating {count} number of users")
             logging.info(f"Created {is_seller_counter} number of seller(s)")

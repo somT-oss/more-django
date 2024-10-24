@@ -8,6 +8,19 @@ class CustomUserAdmin(admin.ModelAdmin):
     """
     list_display = ("first_name", "last_name", "email", "is_seller")
 
+@admin.register(BusinessOwnerProfile)
+class BusinessOwnerProfileAdmin(admin.ModelAdmin):
+    """
+    Custom business owner profile admin handler
+    """
+    list_display = "get_buyer_first_name", "get_buyer_last_name"
+
+    def get_buyer_first_name(self, obj) -> str:
+        return obj.user.first_name
+
+    def get_buyer_last_name(self, obj) -> str:
+        return obj.user.last_name
+
 
 @admin.register(BuyerProfile)
 class BuyerProfileAdmin(admin.ModelAdmin):
@@ -16,11 +29,16 @@ class BuyerProfileAdmin(admin.ModelAdmin):
     """
     list_display = "get_buyer_first_name", "get_buyer_last_name"
 
-    def get_buyer_business_name(self, obj) -> str:
-        return obj.business_name
+    def get_buyer_first_name(self, obj) -> str:
+        return obj.user.first_name
 
-    def get_buyer_profile_picture(self, obj) -> str:
-        return obj.profile_picture
+    def get_buyer_last_name(self, obj) -> str:
+        return obj.user.last_name
+
+    get_buyer_first_name.short_description = "first_name" 
+    get_buyer_last_name.short_description = "last_name" 
+
+
 
 @admin.register(Community)
 class CommunityAdmin(admin.ModelAdmin):

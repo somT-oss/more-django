@@ -85,6 +85,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                                     null=False,
                                     blank=False,
                                     help_text="Check if user is a seller")
+    is_buyer = models.BooleanField(default=False,
+                                    null=False,
+                                    blank=False,
+                                    help_text="Check if user is a buyer ")
+    
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
     objects = UserManager()
@@ -173,7 +178,7 @@ class BuyerProfile(models.Model):
         verbose_name_plural = 'BUYER_PROFILE'
 
     def __str__(self):
-        return self.user.name
+        return f"{self.user.first_name} {self.user.last_name}"
 
 class Community(models.Model):
     """

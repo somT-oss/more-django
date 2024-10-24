@@ -41,6 +41,10 @@ class CreateCustomUserserializers(serializers.ModelSerializer):
         default=False,
         help_text="True; if user is seller, else; False"
     )
+    is_buyer = serializers.BooleanField(
+        default=False,
+        help_text="True; if user is buyer, else; False"
+    )
 
     class Meta:
         model = CustomUser
@@ -51,7 +55,8 @@ class CreateCustomUserserializers(serializers.ModelSerializer):
             "password",
             "hostel",
             "room_name",
-            "is_seller"
+            "is_seller",
+            "is_buyer"
         ]
 
     def validate(self, attrs: dict) -> dict:
