@@ -13,3 +13,4 @@ saas/terraform/.terraform/
 saas/terraform/.terraform*
 saas/terraform/modules/terraform*
 saas/terraform/modules/.terraform*
+saas/config/settings/somto-project-b93232d6a336.json

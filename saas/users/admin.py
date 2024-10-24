@@ -1,14 +1,26 @@
 from django.contrib import admin
-from .models import CustomUser, Community
-
+from .models import CustomUser, Community, BusinessOwnerProfile, BuyerProfile
 
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
     """
-    Custom custom user admin handler
+    Custom user admin handler
     """
     list_display = ("first_name", "last_name", "email", "is_seller")
 
+
+@admin.register(BuyerProfile)
+class BuyerProfileAdmin(admin.ModelAdmin):
+    """
+    Custom buyer_profile admin handler 
+    """
+    list_display = "get_buyer_first_name", "get_buyer_last_name"
+
+    def get_buyer_business_name(self, obj) -> str:
+        return obj.business_name
+
+    def get_buyer_profile_picture(self, obj) -> str:
+        return obj.profile_picture
 
 @admin.register(Community)
 class CommunityAdmin(admin.ModelAdmin):
