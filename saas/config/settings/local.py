@@ -10,10 +10,11 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend'
 ]
 
-INSTALLED_APPS += [
+INSTALLED_APPS += [  # noqa: F405
                     "users",
                     "products",
                     "orders",
+                    "communities",
                     "rest_framework_simplejwt"
                 ]
 

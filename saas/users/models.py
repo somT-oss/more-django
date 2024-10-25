@@ -179,35 +179,3 @@ class BuyerProfile(models.Model):
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
-
-class Community(models.Model):
-    """
-    Model that represents a community
-    """
-    id = models.CharField(default=uuid.uuid4, primary_key=True)
-    community_owner = models.ForeignKey(CustomUser,
-                                        on_delete=models.CASCADE,
-                                        help_text="Owner of the community")
-    name = models.CharField(max_length=50,
-                            null=False,
-                            blank=False,
-                            help_text="Community name")
-    description = models.TextField(max_length=250,
-                                   null=False,
-                                   blank=False,
-                                   help_text="Community description")
-    community_members = models.ManyToManyField(CustomUser,
-                                               related_name="members")
-    created_at = models.DateTimeField(auto_now_add=True,
-                                      editable=False,
-                                      help_text="Date the community was create")
-
-    class Meta:
-        """
-        Meta class for overriding default model behaviours
-        """
-        verbose_name = 'COMMUNITY'
-        verbose_name_plural = 'COMMUNITIES'
-
-    def __str__(self) -> str:
-        return self.name
