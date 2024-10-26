@@ -71,14 +71,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                               blank=False,
                               unique=True,
                               help_text="User email")
-    hostel = models.CharField(null=False,
-                              blank=False,
-                              choices=Hostels,
-                              help_text="User's hostel")
-    room_name = models.CharField(max_length=30,
-                                 blank=False,
-                                 null=False,
-                                 help_text="User's room name")
     is_staff = models.BooleanField(default=False,
                                    help_text='Staff user')
     is_seller = models.BooleanField(default=False,

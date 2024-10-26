@@ -25,18 +25,6 @@ class CreateCustomUserserializers(serializers.ModelSerializer):
         allow_blank=False,
         help_text="User's password"
     )
-    hostel = serializers.CharField(
-        max_length=30,
-        allow_null=False,
-        allow_blank=False,
-        help_text="User's hostel"
-    )
-    room_name = serializers.CharField(
-        max_length=10,
-        allow_null=False,
-        allow_blank=False,
-        help_text="User's room name"
-    )
     is_seller = serializers.BooleanField(
         default=False,
         help_text="True; if user is seller, else; False"
@@ -53,8 +41,6 @@ class CreateCustomUserserializers(serializers.ModelSerializer):
             "last_name",
             "email",
             "password",
-            "hostel",
-            "room_name",
             "is_seller",
             "is_buyer"
         ]
@@ -63,10 +49,6 @@ class CreateCustomUserserializers(serializers.ModelSerializer):
         """
         Validate request JSON
         """
-        all_hostels = ['jaja', 'biobaku', 'eni_njoku', 'mariere']
-        if attrs.get('hostel') not in all_hostels:
-            raise ValidationError("Invalid hostel")
-
         if attrs.get('is_seller') and attrs.get('is_buyer'):
             raise ValidationError('You cannot be both a buyer and seller')
 
