@@ -30,8 +30,6 @@ class UserFunctionalityHandler:
         self.port = os.getenv("DEV_SERVER_PORT")
         self.base_url = f"{self.url}:{self.port}/"
         self.password = "testing.321"
-        self.hostels = ['jaja', 'biobaku', 'eni_njoku', 'mariere']
-        self.room_names = ["110", "112", "113", "114", "115"]
         self.fake = Faker()
         return None
 
@@ -62,8 +60,6 @@ class UserFunctionalityHandler:
                     "last_name": self.fake.unique.last_name(),
                     "email": self.fake.unique.email(),
                     "password": self.password,
-                    "hostel": random.choice(self.hostels),
-                    "room_name": random.choice(self.room_names),
                     "is_seller": is_seller,
                     "is_buyer": is_buyer,
                 }
