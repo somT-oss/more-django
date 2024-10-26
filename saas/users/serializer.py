@@ -67,6 +67,9 @@ class CreateCustomUserserializers(serializers.ModelSerializer):
         if attrs.get('hostel') not in all_hostels:
             raise ValidationError("Invalid hostel")
 
+        if attrs.get('is_seller') and attrs.get('is_buyer'):
+            raise ValidationError('You cannot be both a buyer and seller')
+
         return attrs
 
     def create(self, validated_data) -> CustomUser:
@@ -89,4 +92,13 @@ class CustomUsersLoginSerializer(serializers.ModelSerializer):
         fields = [
             "email",
             "password"
+        ]
+
+class ForgotPasswordSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
+
+    class Meta:
+        model = CustomUser
+        fields = [
+            'email'
         ]

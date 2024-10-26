@@ -37,6 +37,3 @@ class BuyerProfileAdmin(admin.ModelAdmin):
 
     get_buyer_first_name.short_description = "first_name" 
     get_buyer_last_name.short_description = "last_name" 
-
-
-

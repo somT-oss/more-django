@@ -14,7 +14,7 @@ INSTALLED_APPS += [  # noqa: F405
                     "users",
                     "products",
                     "orders",
-                    "communities",
+                    "communities",          
                     "rest_framework_simplejwt"
                 ]
 
