@@ -10,13 +10,14 @@ from drf_yasg.utils import swagger_auto_schema
 SWAGGER_TAG_NAME = 'Users'
 
 @swagger_auto_schema(
-    method=['POST'],
+    method='POST',
     request_body=CreateCustomUserserializers,
     responses={
         201: 'Account successfully created',
         400: 'Bad Request',
         500: 'Internal Server Error'
-    }
+    },
+    tags=[SWAGGER_TAG_NAME]
 )
 @api_view(['POST'])
 def create_user(request: Request) -> Response:
@@ -39,13 +40,14 @@ def create_user(request: Request) -> Response:
 
 
 @swagger_auto_schema(
-    method=['POST'],
+    method='POST',
     request_body=CustomUsersLoginSerializer,
     responses={
         200: 'Successful Login',
         400: 'Bad Request',
         500: 'Internal Server Error'
-    }
+    },
+    tags=[SWAGGER_TAG_NAME]
 )
 @api_view(['POST'])
 def user_login(request: Request) -> Response:
