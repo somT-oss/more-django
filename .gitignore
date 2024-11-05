@@ -1,0 +1,16 @@
+.env 
+saas/__pycache__/*
+saas/*/__pycache__/*
+saas/*/*/__pycache__/*
+.idea/
+saas/config/settings/somto-project-c8498fdacab0.json
+saas/terraform/modules.terraform.tfvars.json
+saas/config/static
+saas/terraform/modules/terraform.tfvars.json
+saas/terraform/tf_env.sh
+saas/terraform/terraform.tfstate
+saas/terraform/.terraform/
+saas/terraform/.terraform*
+saas/terraform/modules/terraform*
+saas/terraform/modules/.terraform*
+saas/config/settings/somto-project-b93232d6a336.json
