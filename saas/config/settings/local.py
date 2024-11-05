@@ -11,11 +11,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 INSTALLED_APPS += [  # noqa: F405
-                    "users",
-                    "products",
-                    "orders",
-                    "communities",          
-                    "rest_framework_simplejwt"
+                    
                 ]
 
 DEBUG = True
