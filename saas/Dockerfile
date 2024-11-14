@@ -1,6 +1,6 @@
 FROM python:3.11.9
 
-WORKDIR /communely/
+WORKDIR /communely
 
 COPY requirements/prod_requirement.txt /communely/requirements.txt
 
