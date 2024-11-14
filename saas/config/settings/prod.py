@@ -7,7 +7,7 @@ from google.cloud import storage
 
 load_dotenv(find_dotenv())
 
-ALLOWED_HOST = []
+ALLOWED_HOST = ['communely-backend-dev-857861010647.us-central1.run.app']
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend'
