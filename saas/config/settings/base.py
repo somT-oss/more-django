@@ -146,15 +146,39 @@ MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 STATIC_ROOT = BASE_DIR / 'static'
+ENV = os.getenv('ENV')
+print(ENV)
 
-credentials_file_path = os.getenv('GS_CREDENTIALS_PATH')
-if not credentials_file_path:
-    print("File not found")
+# In DEV
+if ENV == 'dev':
+    credentials_file_path = os.getenv('GS_CREDENTIALS_PATH')
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(credentials_file_path)
 
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(credentials_file_path)
+# In PROD
+elif ENV == 'prod':
+    credentials_file_path = os.environ.setdefault(
+        'GS_CREDENTIALS_PATH', 'gs://communely_media_bucket/somto-project-b93232d6a336.json'
+    )
+    bucket_name, blob_name = credentials_file_path.replace('gs://', '').split('/', 1)
+
+    # Define the temporary local file path
+    local_temp_file_path = Path('/tmp/service_account.json').resolve()
+
+    storage_client = storage.Client(project='somto-project')
+
+    # Download the service account file from GCS
+    bucket = storage_client.bucket(GS_BUCKET_NAME)
+    blob = bucket.blob(blob_name)
+    blob.download_to_filename(local_temp_file_path)
+
+    # Use the downloaded service account file to create credentials
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(local_temp_file_path)
+
+    # Optionally, you can delete the temporary file after creating the credentials
+    local_temp_file_path.unlink()
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "users.CustomUser"
