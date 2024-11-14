@@ -1,10 +1,13 @@
 import os
 from .base import *  # noqa: F403
 from dotenv import load_dotenv, find_dotenv
+from google.oauth2 import service_account
+from google.cloud import storage
+
 
 load_dotenv(find_dotenv())
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
+ALLOWED_HOST = []
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend'
@@ -15,7 +18,6 @@ INSTALLED_APPS += [  # noqa: F405
                 ]
 
 DEBUG = True
-
 
 DATABASES = {
     "default": {

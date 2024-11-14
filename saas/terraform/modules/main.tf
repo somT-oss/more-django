@@ -11,3 +11,9 @@ module "service_account" {
     service_account_id = var.service_account_id
     service_account_name = var.service_account_name
 }
+
+module "cloud_run" {
+  source = "./cloud_run_module"
+  project_id = var.project_id
+  docker_image = var.docker_image
+}

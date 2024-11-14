@@ -17,3 +17,8 @@ variable "service_account_id" {
   description = "   Service account id"
   type = string
 }
+
+variable "docker_image" {
+  description = "docker image url"
+  type = string
+}
