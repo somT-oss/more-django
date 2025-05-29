@@ -11,6 +11,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv, find_dotenv
+from google.oauth2 import service_account
+from google.cloud import storage
+
+
+load_dotenv(find_dotenv())
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,9 +41,27 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_resized',
-    'rest_framework'
+    'users',
+    'products',
+    'orders',
+    'communities',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'drf_yasg'
 ]
 
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Basic': {
+            'type': 'basic'
+        }, 
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -112,11 +137,45 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
 
-STATIC_URL = 'static/'
+GS_BUCKET_NAME = os.getenv('GS_BUCKET_NAME')
+STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/static/'
+MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/media/'
+
+MEDIA_ROOT = BASE_DIR / 'media'
+STATIC_ROOT = BASE_DIR / 'static'
+credentials_file_path = os.getenv('GS_CREDENTIALS_PATH')
+
+if not credentials_file_path:
+    credentials_file_path = os.environ.setdefault(
+        'GS_CREDENTIALS_PATH', 'gs://communely_media_bucket/somto-project-b93232d6a336.json'
+    )
+
+if credentials_file_path.startswith('gs://'):
+    bucket_name, blob_name = credentials_file_path.replace('gs://', '').split('/', 1)
+
+    # Define the temporary local file path
+    local_temp_file_path = Path('/tmp/service_account.json').resolve()
+
+    storage_client = storage.Client(project='somto-project')
+
+    # Download the service account file from GCS
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(blob_name)
+    blob.download_to_filename(local_temp_file_path)
+
+    # Use the downloaded service account file to create credentials
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(local_temp_file_path)
+
+    # Optionally, you can delete the temporary file after creating the credentials
+    local_temp_file_path.unlink()
+else:
+    # Use the credentials file directly if it's a local path
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(credentials_file_path)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "users.CustomUser"

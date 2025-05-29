@@ -50,14 +50,9 @@ paramiko==3.4.1
 parso==0.8.4
 pillow==10.4.0
 pluggy==1.5.0
-<<<<<<< HEAD
-protobuf==4.24.4
-# psycopg2==2.9.9
-=======
 proto-plus==1.24.0
 protobuf==5.27.2
 psycopg2==2.9.9
->>>>>>> 933c2c75f1245c04e41e5864263b2adab79cf79f
 psycopg2-binary==2.9.9
 pyasn1==0.6.0
 pyasn1_modules==0.4.0

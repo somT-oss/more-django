@@ -16,9 +16,26 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title='Communely Clone Swagger Docs',
+        default_version='v1',
+        description='This API is strictly for learning purposes as the author tries to clone a "popular" B2B app developed in his school',
+        contact=openapi.Contact(email='somtochukwuuchegbu@gmail.com'),
+    ), 
+    public=True,
+    permission_classes=(permissions.AllowAny,), 
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("api/users/", include(("users.urls", "users"), namespace="users")),
-    path("api/products/", include(("products.urls", "products"), namespace="products")),
+    path("api/v1/users/", include(("users.urls", "users"), namespace="users")),
+    path("api/v1/products/", include(("products.urls", "products"), namespace="products")),
+    path('api/v1/docs<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('api/v1/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('api/v1/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]

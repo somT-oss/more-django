@@ -5,6 +5,8 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.conf import settings
+from django_resized import ResizedImageField
+
 
 class UserManager(BaseUserManager):
     """
@@ -69,20 +71,17 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                               blank=False,
                               unique=True,
                               help_text="User email")
-    hostel = models.CharField(null=False,
-                              blank=False,
-                              choices=Hostels,
-                              help_text="User's hostel")
-    room_name = models.CharField(max_length=30,
-                                 blank=False,
-                                 null=False,
-                                 help_text="User's room name")
     is_staff = models.BooleanField(default=False,
                                    help_text='Staff user')
     is_seller = models.BooleanField(default=False,
                                     null=False,
                                     blank=False,
                                     help_text="Check if user is a seller")
+    is_buyer = models.BooleanField(default=False,
+                                    null=False,
+                                    blank=False,
+                                    help_text="Check if user is a buyer ")
+    
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
     objects = UserManager()
@@ -106,6 +105,7 @@ class BusinessOwnerProfile(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
+    profile_picture = ResizedImageField(size=[400, 400], upload_to='profile_picture', default='profile_pic/default.png')
     business_name = models.CharField(
         max_length=100,
         null=False,
@@ -142,13 +142,13 @@ class BusinessOwnerProfile(models.Model):
         return self.business_name
 
 
-
 class BuyerProfile(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         help_text="Profile for buyers"
     )
+    profile_picture = ResizedImageField(size=[400, 400], upload_to='profile_picture', default='profile_pic/default.png')
     created_at = models.DateTimeField(
         auto_now_add=True,
         editable=False,
@@ -170,36 +170,4 @@ class BuyerProfile(models.Model):
         verbose_name_plural = 'BUYER_PROFILE'
 
     def __str__(self):
-        return self.user.name
-
-class Community(models.Model):
-    """
-    Model that represents a community
-    """
-    id = models.CharField(default=uuid.uuid4, primary_key=True)
-    community_owner = models.ForeignKey(CustomUser,
-                                        on_delete=models.CASCADE,
-                                        help_text="Owner of the community")
-    name = models.CharField(max_length=50,
-                            null=False,
-                            blank=False,
-                            help_text="Community name")
-    description = models.TextField(max_length=250,
-                                   null=False,
-                                   blank=False,
-                                   help_text="Community description")
-    community_members = models.ManyToManyField(CustomUser,
-                                               related_name="members")
-    created_at = models.DateTimeField(auto_now_add=True,
-                                      editable=False,
-                                      help_text="Date the community was create")
-
-    class Meta:
-        """
-        Meta class for overriding default model behaviours
-        """
-        verbose_name = 'COMMUNITY'
-        verbose_name_plural = 'COMMUNITIES'
-
-    def __str__(self) -> str:
-        return self.name
+        return f"{self.user.first_name} {self.user.last_name}"
